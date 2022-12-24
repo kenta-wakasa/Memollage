@@ -24,6 +24,7 @@ if (flutterVersionName == null) {
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: "com.github.triplet.play"
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 def hasReleaseProps = false
@@ -84,7 +85,15 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.release
+            minifyEnabled false // <- これを追加するとなぜかアップロードできる
+            shrinkResources false // <- これを追加するとなぜかアップロードできる
         }
+    }
+
+    // Google Play Console API を使ったアップロード
+    play {
+       serviceAccountCredentials = rootProject.file ("google-service.json") // jsonのパスを設定
+       // ここにはいろいろオプションを追加できる
     }
 }
 
