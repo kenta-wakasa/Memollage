@@ -21,12 +21,21 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
+def hasReleaseProps = false
+def releasePropsFile = rootProject.file('release.properties')
+def releaseProps = new Properties()
+if (releasePropsFile.exists()) {
+    releaseProps.load(new FileInputStream(releasePropsFile))
+    hasReleaseProps = true
+}
+
 android {
-    compileSdkVersion flutter.compileSdkVersion
+    compileSdkVersion 33
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -42,9 +51,14 @@ android {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
+    lintOptions {
+        disable 'InvalidPackage'
+        checkReleaseBuilds false //<- add this line
+    }
+
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.collage"
+        applicationId "com.pressedkonbu.collage"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
         minSdkVersion flutter.minSdkVersion
@@ -53,11 +67,23 @@ android {
         versionName flutterVersionName
     }
 
+
+    signingConfigs {
+        release {
+            if (hasReleaseProps) {
+                keyAlias releaseProps['keyAlias']
+                keyPassword releaseProps['keyPassword']
+                storeFile rootProject.file(releaseProps['storeFile'])
+                storePassword releaseProps['storePassword']
+            }
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
     }
 }

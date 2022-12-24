@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Collage</string>
+	<string>Memollage</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -49,5 +49,7 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>コラージュを作成するためにアルバム内の画像を使用します。権限の許可をお願いいたします。</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+  <false/>
 </dict>
 </plist>
