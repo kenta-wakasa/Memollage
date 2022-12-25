@@ -4,5 +4,5 @@
 
 ## Android リリース手順
 
-cd android
-./gradlew publishBundle
+1. `cd android`
+1. `./gradlew publishBundle`
